@@ -23,6 +23,16 @@ var payload = function(sensor, data) {
   };
 }
 
+function writeToFile(filename, data) {
+  fs.appendFile(filename, data, function (err) {
+  if (err) {
+    // append failed
+  } else {
+    // done
+  }
+});
+}
+
 var connected = new Promise((resolve, reject) => SensorTag.discoverByAddress(SENSORTAG_ADDRESS, (tag) => resolve(tag)))
   .then((tag) => new Promise((resolve, reject) => tag.connectAndSetup(() => resolve(tag), log)));
 
@@ -38,10 +48,12 @@ var sensor = connected.then(function(tag) {
 sensor.then(function(tag) {
   tag.on('irTemperatureChange', function(objectTemp, ambientTemp) {
     socket.emit('sensor:data', payload('irTemperature', {objectTemp, ambientTemp}));
-log(ambientTemp);
+    log(ambientTemp);
+    writeToFile('temp.txt', ambientTemp);
   });
 });
 
 socket.on('connect', function () {
       log('SensorTag logger: connected to IOT-Hub at ' + HUB_ADDRESS);
 });
+
