@@ -12,10 +12,12 @@
 
             setInterval(() => {
                 fetch('http://10.0.1.16:8080/api')
-                    .then(function(response) {
-                        
-                        osc.frequency.value = 440; // Hz
-                    })
+                .then(function(response) { 
+                    // Convert to JSON
+                    return response.json();
+                }).then(function(j) {
+                    osc.frequency.value = 440 * j.accelometer; 
+                });
             }, 500);
         </script>
     </body>
