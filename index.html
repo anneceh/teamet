@@ -16,9 +16,16 @@
                     // Convert to JSON
                     return response.json();
                 }).then(function(j) {
-                    osc.frequency.value = 440 * j.accelometer; 
+                    osc.frequency.value = 440 * j.accelometer;
+                    document.getElementById('accelometer').innerHTML = j.accelometer;
+                    document.getElementById('temp').innerHTML = j.temp;
+                    document.getElementById('magnet').innerHTML = j.magnet;
                 });
-            }, 500);
+            }, 1000);
         </script>
+
+        <div id="accelometer"></div>
+        <div id="temp"></div>
+        <div id="magnet"></div>
     </body>
 </html>
