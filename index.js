@@ -1,16 +1,9 @@
-var sensortag = require('sensortag');
 var fs = require('fs');
 
 var HUB_ADDRESS = process.argv[2] || 'http://localhost:3000';
 var ID = process.argv[3] || 'sensortag1';
 var SENSORTAG_ADDRESS = process.argv[4] || 'b0:b4:48:c9:57:81';
 
-/**
- * A simple IOT-Hub-client example for the sensortag device.
- * It sets up logging of irTemperature every second.
- *
- * See https://github.com/mapster/iothub for an IOT-Hub to connect to. 
- */
 
 var socket = require('socket.io-client')(HUB_ADDRESS);
 var SensorTag = require('sensortag');
@@ -45,7 +38,10 @@ var sensor = connected.then(function(tag) {
 sensor.then(function(tag) {
   tag.on('irTemperatureChange', function(objectTemp, ambientTemp) {
     socket.emit('sensor:data', payload('irTemperature', {objectTemp, ambientTemp}));
-log(ambientTemp);
+    var logStream = fs.createWriteStream('temp.txt', {'flags': 'a'});
+    // use {'flags': 'a'} to append and {'flags': 'w'} to erase and write a new file
+    logStream.write(ambientTemp);
+    logStream.end('this is the end line');
   });
 });
 
