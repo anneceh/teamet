@@ -102,9 +102,10 @@ router.get('/api', function(req, res) {
 });
 
 var path = require('path');
+global.appRoot = path.resolve(__dirname);
 
 router.get('/', function(req, res) {
-    res.sendFile(path.resolve(app.get('appPath')  + '/index.html'));
+    res.sendFile(path.resolve(global.appRoot  + '/index.html'));
 });
 
 app.use('/', router);
