@@ -58,12 +58,3 @@ sensor.then(function(tag) {
 socket.on('connect', function () {
       log('SensorTag logger: connected to IOT-Hub at ' + HUB_ADDRESS);
 });
-
-var http = require('http');
-
-var app = http.createServer(function(req,res){
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ temp: temp }, null, 3));
-});
-
-app.listen(3000);
