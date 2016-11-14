@@ -10,13 +10,13 @@
             osc.connect(context.destination); // connect it to the destination
             osc.start(); // start the oscillator
 
-            setTimeout(() => {
+            setInterval(() => {
                 fetch('http://10.0.1.16:8080/api')
                     .then(function(response) {
                         
                         osc.frequency.value = 440; // Hz
                     })
-            }, 500)
+            }, 500);
         </script>
     </body>
 </html>
