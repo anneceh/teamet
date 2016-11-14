@@ -10,6 +10,8 @@ var SensorTag = require('sensortag');
 var http = require('http');
 
 var temp = 0;
+var magnet = 0;
+var accelometer = 0;
 
 var log = function(text) {
   if(text) {
@@ -68,14 +70,14 @@ sensor.then(function(tag) {
     socket.emit('sensor:data', payload('irTemperature', {objectTemp, ambientTemp}));
     log(ambientTemp);
     writeToFile('accel.txt', ambientTemp);
-    temp = ambientTemp;
+    accelometer = ambientTemp;
   });
 
   tag.on('magnetometerChange', function(objectTemp, ambientTemp) {
     socket.emit('sensor:data', payload('irTemperature', {objectTemp, ambientTemp}));
     log(ambientTemp);
     writeToFile('magnometer.txt', ambientTemp);
-    temp = ambientTemp;
+    magnet = ambientTemp;
   });
 
 });
@@ -108,14 +110,14 @@ var router = express.Router();              // get an instance of the express Ro
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
+    res.json({ temp: temp, magnet: magnet, accelometer: accelometer });   
 });
 
 // more routes for our API will happen here
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
-app.use('/api', router);
+app.use('/', router);
 
 // START THE SERVER
 // =============================================================================
