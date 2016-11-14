@@ -59,13 +59,11 @@ socket.on('connect', function () {
       log('SensorTag logger: connected to IOT-Hub at ' + HUB_ADDRESS);
 });
 
-var app = express();
+var http = require('http');
 
-app.get('/', function (req, res) {
-  res.status(200);
-  res.send(temp)
-})
+var app = http.createServer(function(req,res){
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ temp: temp }, null, 3));
+});
 
-app.listen(3000, function () {
-  console.log(temp)
-})
+app.listen(3000);
