@@ -24,7 +24,7 @@ var payload = function(sensor, data) {
 }
 
 function writeToFile(filename, data) {
-  fs.appendFile(filename, data, function (err) {
+  fs.appendFile(filename, data + '\n', function (err) {
   if (err) {
     // append failed
   } else {
