@@ -7,6 +7,8 @@ var SENSORTAG_ADDRESS = process.argv[4] || 'b0:b4:48:c9:57:81';
 var express = require('express');
 var socket = require('socket.io-client')(HUB_ADDRESS);
 var SensorTag = require('sensortag');
+var http = require('http');
+
 var temp = 0;
 
 var log = function(text) {
@@ -68,7 +70,7 @@ sensor.then(function(tag) {
     writeToFile('accel.txt', ambientTemp);
     temp = ambientTemp;
   });
-  
+
   tag.on('magnetometerChange', function(objectTemp, ambientTemp) {
     socket.emit('sensor:data', payload('irTemperature', {objectTemp, ambientTemp}));
     log(ambientTemp);
@@ -80,4 +82,13 @@ sensor.then(function(tag) {
 
 socket.on('connect', function () {
       log('SensorTag logger: connected to IOT-Hub at ' + HUB_ADDRESS);
+});
+
+
+var express = require('express');
+var app = express();
+
+app.get('/', function(req, res) {
+  res.type('text/plain');
+  res.send('i am a beautiful butterfly');
 });
