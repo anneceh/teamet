@@ -4,7 +4,7 @@ var HUB_ADDRESS = process.argv[2] || 'http://localhost:3000';
 var ID = process.argv[3] || 'sensortag1';
 var SENSORTAG_ADDRESS = process.argv[4] || 'b0:b4:48:c9:57:81';
 
-
+var express = require('express');
 var socket = require('socket.io-client')(HUB_ADDRESS);
 var SensorTag = require('sensortag');
 
@@ -57,3 +57,12 @@ socket.on('connect', function () {
       log('SensorTag logger: connected to IOT-Hub at ' + HUB_ADDRESS);
 });
 
+var app = express();
+
+app.get('/', function (req, res) {
+  res.send(temp)
+})
+
+app.listen(3000, function () {
+  console.log(temp)
+})
