@@ -43,6 +43,14 @@ var sensor = connected.then(function(tag) {
   tag.notifyIrTemperature(log);
   tag.setIrTemperaturePeriod(1000, log);
 
+    tag.enableAccelerometer(log);
+  tag.notifyAccelerometer(log);
+  tag.setAccelerometerPeriod(1000, log);
+
+    tag.enableMagnetometer(log);
+  tag.notifyMagnetometer(log);
+  tag.setMagnetometerPeriod(1000, log);
+
   return tag;
 });
 
@@ -53,6 +61,21 @@ sensor.then(function(tag) {
     writeToFile('temp.txt', ambientTemp);
     temp = ambientTemp;
   });
+  
+  tag.on('accelerometerChange', function(objectTemp, ambientTemp) {
+    socket.emit('sensor:data', payload('irTemperature', {objectTemp, ambientTemp}));
+    log(ambientTemp);
+    writeToFile('accel.txt', ambientTemp);
+    temp = ambientTemp;
+  });
+  
+  tag.on('magnetometerChange', function(objectTemp, ambientTemp) {
+    socket.emit('sensor:data', payload('irTemperature', {objectTemp, ambientTemp}));
+    log(ambientTemp);
+    writeToFile('magnometer.txt', ambientTemp);
+    temp = ambientTemp;
+  });
+
 });
 
 socket.on('connect', function () {
