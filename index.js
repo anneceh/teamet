@@ -101,8 +101,10 @@ router.get('/api', function(req, res) {
     res.json({ temp: temp, magnet: magnet, accelometer: accelometer });   
 });
 
+var path = require('path');
+
 router.get('/', function(req, res) {
-    res.sendFile('index.html') 
+    res.sendFile(path.resolve(app.get('appPath')  + '/index.html'));
 });
 
 app.use('/', router);
