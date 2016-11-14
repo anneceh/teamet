@@ -1,1 +1,6 @@
-{}
+{
+    "dependencies": {
+        "sensortag": "^1.2.3",
+        "socket.io-client": "^1.5.1"
+    }
+}
