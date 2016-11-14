@@ -1,0 +1,2 @@
+http://admin:WelcometoCX01@10.0.1.16:8083/ZAutomation/api/v1/devices/ZWayVDev_zway_2-0-37/command/off 
+http://admin:WelcometoCX01@10.0.1.16:8083/ZAutomation/api/v1/devices/ZWayVDev_zway_2-0-37/command/on
