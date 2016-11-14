@@ -8,6 +8,12 @@ var SENSORTAG_ADDRESS = process.argv[4] || 'b0:b4:48:c9:57:81';
 var socket = require('socket.io-client')(HUB_ADDRESS);
 var SensorTag = require('sensortag');
 
+var log = function(text) {
+  if(text) {
+    console.log(text);
+  }
+}
+
 var payload = function(sensor, data) {
   return {
     id: ID,
@@ -22,9 +28,9 @@ var connected = new Promise((resolve, reject) => SensorTag.discoverByAddress(SEN
 
 var sensor = connected.then(function(tag) {
   log('SensorTag: connected to ' + SENSORTAG_ADDRESS);
-  tag.enableIrTemperature();
-  tag.notifyIrTemperature();
-  tag.setIrTemperaturePeriod(1000);
+  tag.enableIrTemperature(log);
+  tag.notifyIrTemperature(log);
+  tag.setIrTemperaturePeriod(1000, log);
 
   return tag;
 });
@@ -32,10 +38,10 @@ var sensor = connected.then(function(tag) {
 sensor.then(function(tag) {
   tag.on('irTemperatureChange', function(objectTemp, ambientTemp) {
     socket.emit('sensor:data', payload('irTemperature', {objectTemp, ambientTemp}));
-    console.log(ambientTemp);
+log(ambientTemp);
   });
 });
 
 socket.on('connect', function () {
-      console.log('SensorTag logger: connected to IOT-Hub at ' + HUB_ADDRESS);
+      log('SensorTag logger: connected to IOT-Hub at ' + HUB_ADDRESS);
 });
