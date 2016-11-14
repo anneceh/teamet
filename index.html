@@ -10,6 +10,12 @@
             osc.connect(context.destination); // connect it to the destination
             osc.start(); // start the oscillator
 
+            var osc2 = context.createOscillator(); // instantiate an oscillator
+            osc2.type = 'sine'; // this is the default - also square, sawtooth, triangle
+            
+            osc2.connect(context.destination); // connect it to the destination
+            osc2.start(); // start the oscillator
+
             setInterval(() => {
                 fetch('http://10.0.1.16:8080/api')
                 .then(function(response) { 
@@ -17,11 +23,13 @@
                     return response.json();
                 }).then(function(j) {
                     osc.frequency.value = 440 * j.accelometer;
+                    osc2.frequency.value = 100 * j.magnet;
+
                     document.getElementById('accelometer').innerHTML = j.accelometer;
                     document.getElementById('temp').innerHTML = j.temp;
                     document.getElementById('magnet').innerHTML = j.magnet;
                 });
-            }, 1000);
+            }, 300);
         </script>
 
         <div id="accelometer"></div>
